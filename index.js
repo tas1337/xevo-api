@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const net = require('net');
+var path = require('path');
 
 const port = 3000;
 const cppPort = 8080;
@@ -17,13 +18,24 @@ const io = socketIo(server, {
 let playerPositions = {};
 
 const cppClient = new net.Socket();
-cppClient.connect(cppPort, 'xevo-game-server', function() {
+cppClient.connect(cppPort, 'xevo-cpp-server', function() {
     console.log('Successfully connected to C++ service');
 });
 
 cppClient.on('error', (error) => {
     console.error('Connection to C++ service failed:', error);
 });
+
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('*', (req, res) => {
+    res.set('Content-Type', 'text/html');
+    res.set('Content-Type', 'application/javascript');
+    res.set('Content-Type', 'text/css');
+    return res.sendFile(path.join(__dirname, 'public/index.html'));
+});
+
 
 io.on('connection', (socket) => {
     console.log('A new client has connected');
