@@ -60,8 +60,12 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
+        console.log(`Player ${socket.id} has disconnected`);
         cppClient.write(JSON.stringify({ action: 'disconnect', id: socket.id }));
-    });
+        // Remove the disconnected player from playerPositions object
+        delete playerPositions[socket.id];
+        io.emit('updatePositions', playerPositions);
+      });
 });
 
 cppClient.on('data', (data) => {
