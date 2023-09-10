@@ -42,9 +42,9 @@ io.on('connection', (socket) => {
     socket.emit('updatePositions', playerPositions);
 
     socket.on('move', (data) => {
-        if (data && typeof data.x === "number" && typeof data.y === "number") {
+        if (data && typeof data.x === "number" && typeof data.z === "number") {  // Changed y to z
             data.x = Math.min(data.x, 0.5);
-            data.y = Math.min(data.y, 0.5);
+            data.z = Math.min(data.z, 0.5);  // Changed y to z
             const payload = {
                 id: socket.id,
                 ...data,
@@ -73,8 +73,8 @@ cppClient.on('data', (data) => {
     try {
         const parsedData = JSON.parse(dataStr);
         
-        if (parsedData.id && typeof parsedData.x === "number" && typeof parsedData.y === "number") {
-            playerPositions[parsedData.id] = { x: parsedData.x, y: parsedData.y };
+        if (parsedData.id && typeof parsedData.x === "number" && typeof parsedData.z === "number") {  // Changed y to z
+            playerPositions[parsedData.id] = { x: parsedData.x, z: parsedData.z };  // Changed y to z
             io.emit('updatePositions', playerPositions);
         }
     } catch (err) {
