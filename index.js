@@ -42,9 +42,9 @@ io.on('connection', (socket) => {
     socket.emit('updatePositions', playerPositions);
 
     socket.on('move', (data) => {
-        if (data && typeof data.x === "number" && typeof data.z === "number") {  // Changed y to z
+        if (data && typeof data.x === "number" && typeof data.z === "number") { 
             data.x = Math.min(data.x, 0.5);
-            data.z = Math.min(data.z, 0.5);  // Changed y to z
+            data.z = Math.min(data.z, 0.5); 
             const payload = {
                 id: socket.id,
                 ...data,
@@ -62,7 +62,7 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log(`Player ${socket.id} has disconnected`);
         cppClient.write(JSON.stringify({ action: 'disconnect', id: socket.id }));
-        // Remove the disconnected player from playerPositions object
+ 
         delete playerPositions[socket.id];
         io.emit('updatePositions', playerPositions);
       });
@@ -73,8 +73,8 @@ cppClient.on('data', (data) => {
     try {
         const parsedData = JSON.parse(dataStr);
         
-        if (parsedData.id && typeof parsedData.x === "number" && typeof parsedData.z === "number") {  // Changed y to z
-            playerPositions[parsedData.id] = { x: parsedData.x, z: parsedData.z };  // Changed y to z
+        if (parsedData.id && typeof parsedData.x === "number" && typeof parsedData.z === "number") { 
+            playerPositions[parsedData.id] = { x: parsedData.x, z: parsedData.z }; 
             io.emit('updatePositions', playerPositions);
         }
     } catch (err) {
