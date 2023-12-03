@@ -23,7 +23,7 @@ COPY --from=angular-build /app/dist/public ./public
 COPY xevo-api/ ./
 
 # Expose API port
-EXPOSE 3000
+EXPOSE 6969
 
 # Start xevo-api
 CMD ["npm", "start"]
