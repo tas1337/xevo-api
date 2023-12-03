@@ -4,7 +4,7 @@ const socketIo = require('socket.io');
 const net = require('net');
 var path = require('path');
 
-const port = 3000;
+const port = 5566;
 const cppPort = 8080;
 
 const app = express();
